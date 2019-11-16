@@ -1,6 +1,9 @@
 
 var startButton = document.getElementById("start-quiz");
 var Timer = document.getElementById("timer");
+var quizBox = document.getElementById("quiz-box"); // element of DOM which contains the Quiz UI
+var quizStart = false; 
+
 var questions = [
                 {
                     title: "Commonly used data types DO NOT include:",
@@ -25,7 +28,7 @@ var questions = [
 startButton.addEventListener("click",function(totalQuizTime)
     {
         //start the timer
-        var totalQuizTime = 10;
+        var totalQuizTime = 75;
         var quizIntroObj = document.getElementById("quiz-intro");
 
         var countdownTimer = setInterval(function()
@@ -46,20 +49,28 @@ startButton.addEventListener("click",function(totalQuizTime)
                         clearInterval(countdownTimer);
                         document.getElementById("timer").style.color = "maroon";    
                     }
-        
             }, 1000);
 
         //clear the button and Introductory page
         quizIntroObj.remove();
+ 
+        for(var ii = 0; ii <= questions.length; ii++)
+        {
+            var quizQuestion = document.createElement("div");
+            quizQuestion.innerHTML = questions[ii]["title"];
+            quizQuestion.setAttribute("style","font-size: 2em")
+            quizBox.appendChild(quizQuestion);
+            //// 
+            for(var jj = 0 ; jj <= questions[ii]["choices"].length-1; jj++)
+                {
+                    var choice = document.createElement("div");
+                    choice.innerHTML=questions[ii]["choices"][jj];
+                    choice.setAttribute("style","font-size: 1em; border:2px solid white; background:purple;")
+                    quizQuestion.appendChild(choice);
+                }
+        }
 
     });
 
-
-// select a random question from the list
-//function questionMaker
-    // create an element for the question
-    // append the
-    // for every answer
-        // create an element 
-
-// on click 
+    
+   
