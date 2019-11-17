@@ -1,11 +1,20 @@
 
+ /*TODO: add a storage for the scoreboard 
+        clean up code
+        create a function on click in which the scoreboard appears*/
+
+
+
 var startButton = document.getElementById("start-quiz");
 var Timer = document.getElementById("timer");
 var quizBox = document.getElementById("quiz-box"); // element of DOM which contains the Quiz UI
 var totalQuizTime = 75;
+var quizQuestion = document.createElement("div");
 var incorrectAlert = document.createElement('div');
 var scoreObj = document.createElement("div");
-
+var viewScores = document.getElementById("view-scores");
+var quizIntroObj = document.getElementById("quiz-intro");
+var stopTime = false;
 // Object to ask questions
 var score = 0;
 var questionNumber = 0;
@@ -44,9 +53,6 @@ var questions = [
 
 startButton.addEventListener("click",function()
     {
-    
-        var quizIntroObj = document.getElementById("quiz-intro");
-
         var countdownTimer = setInterval(function()
             {
                 totalQuizTime = totalQuizTime - 1;
@@ -57,13 +63,15 @@ startButton.addEventListener("click",function()
                         score = totalQuizTime; 
                     }
                 else
-                    {
+                    { 
+                        clearBoard();
                         score = 0;
                     }
 
                 if (questionNumber>= questions.length)
                     {
                         clearInterval(countdownTimer);
+                        clearBoard();
                         generateScoreboard();
                     }
 
@@ -127,7 +135,6 @@ function poseQuestion(iteration)
     //pose Question takes the input iteration and selects that problem from the array problem and creates the elements: choice, quizQuestion  
     {
         // create a div element with the Question title as the inner text HTML
-        var quizQuestion = document.createElement("div");
         quizQuestion.innerHTML = questions[iteration]["title"];
         quizQuestion.setAttribute("id","quiz-question");
         quizQuestion.setAttribute("style","font-size: 2em");
@@ -156,12 +163,63 @@ function poseQuestion(iteration)
         
     }
 
+
+function clearBoard(){
+    stopTime = true;
+    Timer.remove();
+    if(incorrectAlert != null)
+            {
+                incorrectAlert.remove();
+            }
+    if(quizIntroObj != null)
+        {
+            quizIntroObj.remove();
+        }
+    if(quizQuestion != null)
+        {
+            quizQuestion.remove();
+        }
+    
+    
+}
+
+
 function generateScoreboard()
     {
+        
         scoreObj.setAttribute("id","scoreboard");
         scoreObj.innerHTML = "Your Score is: " + score;
         quizBox.appendChild(scoreObj); 
-
     
     }
 
+viewScores.addEventListener("click",function()
+    {
+        clearBoard();
+        // find storage
+        // make a list from greatest to least of obj{}
+    });
+
+/*Minimum Requirements
+
+TO DO 
+Functional, deployed application. --- done 
+GitHub repository with README describing project.
+The first view of the application displays a button that starts the quiz. --- done
+Clicking the start button displays a series of questions. --- done 
+Once the quiz begins, a timer starts. --- done 
+If a question is answered incorrectly, additional time is subtracted from the timer. --- done 
+The timer stops when all questions have been answered or the timer reaches 0. --- done 
+After the game ends, the user can save their initials and score to a highscores view using local storage. 
+
+
+
+Bonus
+
+
+Add audio files to alert the user of correct or incorrect answers. Be sure to include the appropriate license.
+Customize the application theme.
+Create multiple quizzes and an option for users to choose between them.
+Add the application to your portfolio.
+
+*/
