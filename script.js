@@ -4,8 +4,10 @@ var Timer = document.getElementById("timer");
 var quizBox = document.getElementById("quiz-box"); // element of DOM which contains the Quiz UI
 var totalQuizTime = 75;
 var incorrectAlert = document.createElement('div');
+var scoreObj = document.createElement("div");
+
 // Object to ask questions
-var score = 75;
+var score = 0;
 var questionNumber = 0;
 var questions = [
                 {
@@ -13,16 +15,30 @@ var questions = [
                     choices: ["strings", "booleans", "alerts", "numbers"],
                     answer: "alerts"
                 },
+
                 {
                     title: "The condition in an if / else statement is enclosed within ____.",
                     choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
                     answer: "parentheses"
                 },
+
                 {
                     title: "Which built-in method adds one or more elements to the end of an array and returns the new length of the array?",
                     choices: ["last()","put()","push()","None of the above"],
                     answer: "push()"
                 },
+
+                {
+                    title: "What is the HTML tag under which one can write the JavaScript code?",
+                    choices: [ 'javascript', 'scripted', 'script', 'js'],
+                    answer: 'script'
+                },
+
+                {
+                    title:"Which of the following is the correct syntax to display “GeeksforGeeks” in an alert box using JavaScript?",
+                    choices: ['alertbox(“GeeksforGeeks”);', 'msg(“GeeksforGeeks”);', 'msgbox(“GeeksforGeeks”);', 'alert(“GeeksforGeeks”);'],
+                    answer:"alert(“GeeksforGeeks”);"
+                } 
                 ];
 
 
@@ -36,12 +52,19 @@ startButton.addEventListener("click",function()
                 totalQuizTime = totalQuizTime - 1;
                 document.getElementById("timer").innerHTML = "Time Remaining: " + totalQuizTime + " seconds";
                 document.getElementById("timer").style = "white";
+                if (totalQuizTime > 0)
+                    {
+                        score = totalQuizTime; 
+                    }
+                else
+                    {
+                        score = 0;
+                    }
 
                 if (questionNumber>= questions.length)
                     {
                         clearInterval(countdownTimer);
-                        score = totalQuizTime;
-                        alert(score);  /// CHANGE so that it  outputs an input for scoreboard;
+                        generateScoreboard();
                     }
 
                 // Change color as time runs out
@@ -58,6 +81,8 @@ startButton.addEventListener("click",function()
                         clearInterval(countdownTimer);
                         Timer.style.color = "maroon";    
                         Timer.innerHTML= "Time Remaining: 0 seconds";
+                        generateScoreboard();
+
                     }
             }, 1000);
 
@@ -82,15 +107,10 @@ function correctSelection()
                 incorrectAlert.remove();
             }
         console.log(questionNumber);
-        if (questionNumber <= questions.length)
+        if (questionNumber < questions.length)
             {
                
                 poseQuestion(questionNumber);
-            }
-        else
-            {
-                clearInterval(countdownTimer);
-                //show Scoreboard
             }
     }  
 
@@ -115,25 +135,33 @@ function poseQuestion(iteration)
 
         for(var jj = 0 ; jj <= questions[iteration]["choices"].length-1; jj++)
             {        
+                var choice = document.createElement("div");
+                choice.innerHTML=questions[iteration]["choices"][jj];
+                choice.setAttribute("onclick","correctSelection()")
                 if(questions[iteration]["choices"][jj] == questions[iteration]["answer"])
                     {
-                        var choice = document.createElement("div");
-                        choice.innerHTML=questions[iteration]["choices"][jj];
                         choice.setAttribute("id","answer");
                         choice.setAttribute("onclick","correctSelection()")
-                        quizQuestion.appendChild(choice);
+    
                     }
                 else
                     {
-                        var choice = document.createElement("div");
-                        choice.innerHTML=questions[iteration]["choices"][jj];
                         choice.setAttribute("id","wrong");
                         choice.setAttribute("onclick","incorrectSelection()");
-                        quizQuestion.appendChild(choice);
                     }
+
+                quizQuestion.appendChild(choice);
 
             }
         
     }
 
+function generateScoreboard()
+    {
+        scoreObj.setAttribute("id","scoreboard");
+        scoreObj.innerHTML = "Your Score is: " + score;
+        quizBox.appendChild(scoreObj); 
+
+    
+    }
 
