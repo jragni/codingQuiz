@@ -1,5 +1,5 @@
 
- 
+ // TODO: ask adam to troubleshoot localstorage
 
 
 // variables
@@ -187,9 +187,11 @@ function storeNameNScore()
         var user = {};
         user.name = userInput.value;
         user.score = Score;
-        quizTakers = JSON.parse(localStorage.getItem("user"));
+        if (localStorage.getItem("user")!= null)
+        {quiztTakers = JSON.parse(localStorage.getItem("user"));}
         quizTakers.push(user);
         localStorage.setItem('user',JSON.stringify(quizTakers));
+        
     }
 
 function showScoreBoard()
