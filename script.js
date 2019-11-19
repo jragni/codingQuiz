@@ -14,6 +14,7 @@
 
 
 // variables
+var viewScores = document.getElementById("view-scores");
 var timeKeeper; //= setInterval(timerHandler,1000);
 var quizBox = document.getElementById("quiz-box");
 var timer = document.getElementById("timer");
@@ -22,8 +23,13 @@ var startButton = document.getElementById("start-quiz");
 var totalTime = 75; // Amount of time for quiz
 var quizTime = 75; // current quiz time
 var questionNumber = 0;
+var submitObj = document.createElement("div");
+var userFormObj = document.createElement("form");
+var userInput = document.createElement("input");
 var maxScore = 75; 
-var submit = document.getElementById("submit");
+var timeElapsed = totalTime - quizTime;
+var Score = maxScore - timeElapsed;
+var quizTakers = [];
 // Questions
 
 var questions = [
@@ -174,8 +180,8 @@ function finalScore()
     {   
         // time Elapsed = Total Time - quizTime 
         // Score = MaxScore - time Elapsed
-        var timeElapsed = totalTime - quizTime;
-        var Score = maxScore - timeElapsed;
+        timeElapsed = totalTime - quizTime;
+        Score = maxScore - timeElapsed;
         if(Score < 0 )
             {
                 Score = 0;
@@ -183,17 +189,47 @@ function finalScore()
         var scoreObj = document.createElement("div");
         scoreObj.innerHTML = "Final Score:"+ Score + " points!";
         scoreObj.style.fontSize = "2em"; 
+        scoreObj.style.margin = "25px";
         quizBox.appendChild(scoreObj);
     }
 
-/*function showScoreBoard()
-    {
+function storeNameNScore()
+    {   
+        var user = {};
+        user.name = userInput.value;
+        user.score = Score;
+        quizTakers = JSON.parse(localStorage.getItem("user"));
+        quizTakers.push(user);
+        localStorage.setItem('user',JSON.stringify(quizTakers));
+    }
 
-    }*/
+function showScoreBoard()
+    {
+        clearQuizBox();
+        quizTakers = JSON.parse(localStorage.getItem("user"));
+        scoreBoardObj = document.createElement("div");
+        scoreBoardObj.style.background ="salmon";
+        scoreBoardObj.style.padding = "25px"
+        // find the highest score on the scoreboard
+        var headerObj = document.createElement("h1");
+        headerObj.style.textDecoration = "underline";
+        headerObj.innerHTML = "Scoreboard"
+        quizBox.append(headerObj);
+        quizBox.append(scoreBoardObj);
+        for(var i = 0; i < quizTakers.length; i++)
+            {
+                var listObj = document.createElement("h6");
+                listObj.innerHTML = i+1+". <strong> "+ quizTakers[i].name +"</strong>: <em>"+ quizTakers[i].score +" points</em>";
+                listObj.setAttribute("id","scoreboardName");
+                scoreBoardObj.append(listObj);
+            }
+        quizBox.append(scoreBoardObj);
+
+    }
+
+
 function generateUserInputForm()
-    {   var submitObj = document.createElement("div");
-        var userFormObj = document.createElement("form");
-        var userInput = document.createElement("input");
+    {   
         submitObj.setAttribute("id","submit")
         submitObj.innerHTML = "Submit";
         submitObj.style.padding = "10px"
@@ -203,6 +239,15 @@ function generateUserInputForm()
         userFormObj.appendChild(userInput)
         quizBox.appendChild(userFormObj);
         userFormObj.appendChild(submitObj);
+        var submit = document.getElementById("submit");
+
+        submit.addEventListener("click",function(e)
+            {
+                e.preventDefault();
+                storeNameNScore();
+                showScoreBoard();
+            });
+
     }
 
 function quizComplete()
@@ -222,13 +267,20 @@ function quizComplete()
 
 // Start Quiz
 startButton.addEventListener("click", function()
-    {
+    {   // on click, the quizbox will clear and the timer will begin counting down. The function posequestion will create the question fields.
         clearQuizBox();
         is_TimerRunning = true;
         timeKeeper = setInterval(timerHandler,1000);
         poseQuestion(questionNumber);
     });
 
+
+viewScores.addEventListener("click",function()
+    {
+        clearInterval(timeKeeper);
+        timer.remove();
+        showScoreBoard();
+    });
 
 
 
