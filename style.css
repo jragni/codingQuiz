@@ -49,6 +49,10 @@
      margin:2px;
     
 }
+
+#answer:hover{
+    background: #644E5B;
+}
 #wrong{
     font-family: 'Courier New', Courier, monospace; 
     font-size: 1em; 
@@ -56,6 +60,9 @@
     background: #97AABD;
     margin:2px;
 
+}
+#wrong:hover{
+    background: #644E5B;
 }
 
 #incorrect-alert{
@@ -70,4 +77,18 @@
 
 #scoreboard{
     font-size: 5em;
+}
+
+
+#submit{
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1em; 
+    border: .5px solid #C96567; 
+    background: #97AABD;
+    margin:25px;
+}
+
+#submit:hover{
+    background:#644E5B;
 }

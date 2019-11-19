@@ -4,21 +4,13 @@
         create a function on click in which the scoreboard appears*/
 
 // Plan  17 NOV 2019
-// Create a timer function ---- complete
-// Build a button ---> complete
-    // that starts the timer function when it goes on --> complete
-    // clears the quiz area (clear function) --> complete
 
 // create a function that
-    // creates an heading element for the question
-        // innerHTML is the question
-        // appends to the quiz-box element
-    //for each choice:
-        // creates a div element for the choice
+// generates the score board
 
-//clear function 
-    // Removes all elements within the quiz area, --> done 
-    // stops timer 
+// create a function that 
+// generates the form that takes user data
+
 
 
 // variables
@@ -31,7 +23,7 @@ var totalTime = 75; // Amount of time for quiz
 var quizTime = 75; // current quiz time
 var questionNumber = 0;
 var maxScore = 75; 
-
+var submit = document.getElementById("submit");
 // Questions
 
 var questions = [
@@ -81,7 +73,6 @@ function clearQuizBox()
 
 function timerHandler()
     {
-        console.log("quizTime");
         
         quizTime = quizTime - 1;
 
@@ -168,9 +159,6 @@ function incorrectSelection()
         quizBox.appendChild(incorrectAlert);
     }
 
-
-
-
 function correctSelection()
     {    
         alert("Correct!");
@@ -198,6 +186,25 @@ function finalScore()
         quizBox.appendChild(scoreObj);
     }
 
+/*function showScoreBoard()
+    {
+
+    }*/
+function generateUserInputForm()
+    {   var submitObj = document.createElement("div");
+        var userFormObj = document.createElement("form");
+        var userInput = document.createElement("input");
+        submitObj.setAttribute("id","submit")
+        submitObj.innerHTML = "Submit";
+        submitObj.style.padding = "10px"
+        userInput.setAttribute("type","text");
+        userInput.setAttribute("value","Your name");
+        userInput.align = "center";
+        userFormObj.appendChild(userInput)
+        quizBox.appendChild(userFormObj);
+        userFormObj.appendChild(submitObj);
+    }
+
 function quizComplete()
     {
         is_TimerRunning = false;
@@ -205,7 +212,11 @@ function quizComplete()
         clearInterval(timeKeeper);
         timer.remove();
         finalScore();
+        generateUserInputForm();
     }
+
+
+
 // event listeners
 
 
