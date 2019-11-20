@@ -18,7 +18,7 @@ var userInput = document.createElement("input");
 var maxScore = 75; 
 var timeElapsed = totalTime - quizTime;
 var Score = maxScore - timeElapsed;
-var quizTakers = [];
+
 // Questions
 
 var questions = [
@@ -182,41 +182,61 @@ function finalScore()
         quizBox.appendChild(scoreObj);
     }
 
-function storeNameNScore()
-    {   
-        var user = {};
-        user.name = userInput.value;
-        user.score = Score;
-        if (localStorage.getItem("user")!= null)
-        {quiztTakers = JSON.parse(localStorage.getItem("user"));}
-        quizTakers.push(user);
-        localStorage.setItem('user',JSON.stringify(quizTakers));
-        
-    }
+    function storeNameNScore()
+        {
+            var user = {};
+            var quizTakers = [];
+            user.name = userInput.value;
+            user.score = Score;
 
-function showScoreBoard()
-    {
-        clearQuizBox();
-        quizTakers = JSON.parse(localStorage.getItem("user"));
-        scoreBoardObj = document.createElement("div");
-        scoreBoardObj.style.background ="salmon";
-        scoreBoardObj.style.padding = "25px"
-        // find the highest score on the scoreboard
-        var headerObj = document.createElement("h1");
-        headerObj.style.textDecoration = "underline";
-        headerObj.innerHTML = "Scoreboard"
-        quizBox.append(headerObj);
-        quizBox.append(scoreBoardObj);
-        for(var i = 0; i < quizTakers.length; i++)
+            if (localStorage.getItem("user") !==null)
+                {
+                    quizTakers = JSON.parse(localStorage.getItem('user'));
+                    
+                }
+            // get user score
+            quizTakers.push(user);
+            // stringify user score
+            var quizTakersString= JSON.stringify(quizTakers);
+            
+            localStorage.setItem('user',quizTakersString);
+            
+            
+
+
+        }
+
+    function showScoreBoard()
+        {
+            
+            clearQuizBox();
+            //create scoreboard object
+            scoreBoardObj = document.createElement("div");
+            scoreBoardObj.style.background ="salmon";
+            scoreBoardObj.style.padding = "25px"
+            // find the highest score on the scoreboard
+            var headerObj = document.createElement("h1");
+            headerObj.style.textDecoration = "underline";
+            headerObj.innerHTML = "Scoreboard"
+            quizBox.append(headerObj);
+            quizBox.append(scoreBoardObj);
+
+
+            if (localStorage.getItem("user") !==null)
             {
-                var listObj = document.createElement("h6");
-                listObj.innerHTML = i+1+". <strong> "+ quizTakers[i].name +"</strong>: <em>"+ quizTakers[i].score +" points</em>";
-                listObj.setAttribute("id","scoreboardName");
-                scoreBoardObj.append(listObj);
+                quizTakers = JSON.parse(localStorage.getItem('user'));
+                console.log("one");
+                for(var i = 0; i < quizTakers.length; i++)
+                {
+                    var listObj = document.createElement("h6");
+                    listObj.innerHTML = i+1+". <strong> "+ quizTakers[i].name +"</strong>: <em>"+ quizTakers[i].score +" points</em>";
+                    listObj.setAttribute("id","scoreboardName");
+                    scoreBoardObj.append(listObj);
+                }
+                quizBox.append(scoreBoardObj);
             }
-        quizBox.append(scoreBoardObj);
 
-    }
+        }
 
 
 
